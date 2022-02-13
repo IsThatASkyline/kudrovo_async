@@ -4,7 +4,7 @@ import time
 from telebot import types
 from config import token
 
-bot = telebot.TeleBot(tok
+bot = telebot.TeleBot(token)
 
 def get_database():
     from pymongo import MongoClient
