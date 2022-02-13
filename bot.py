@@ -33,17 +33,14 @@ def show_data(message):
     data = list(col.find())
 
     for item in data:
-        if "Нет названия" in item['Название']:
-            continue
-        else:
-            try:
-                card = f"{item['Название']} \n" \
-                       f"{item['Картинка']} \n" \
-                       f"{item['Цена']}\n\n" \
-                       f"{item['Адрес']} \n\n" \
-                       f"{item['Описание']}\n" \
-                       f"{item['Ссылка']}\n"
-                bot.send_message(message.chat.id, card)
-            except:
-                time.sleep(1)
+        try:
+            card = f"{item['Название']} \n" \
+                   f"{item['Картинка']} \n" \
+                   f"{item['Цена']}\n\n" \
+                   f"{item['Адрес']} \n\n" \
+                   f"{item['Описание']}\n" \
+                   f"{item['Ссылка']}\n"
+            bot.send_message(message.chat.id, card)
+        except:
+            time.sleep(1)
 bot.polling()
