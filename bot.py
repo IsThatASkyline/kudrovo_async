@@ -6,19 +6,21 @@ from config import token
 
 bot = telebot.TeleBot(token)
 
-def get_database():
-    from pymongo import MongoClient
-    import pymongo
 
-    # Provide the mongodb atlas url to connect python to mongodb using pymongo
-    CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+from pymongo import MongoClient
+import pymongo
 
-    # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-    from pymongo import MongoClient
-    client = MongoClient(CONNECTION_STRING)
+# Provide the mongodb atlas url to connect python to mongodb using pymongo
+CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-    # Create the database for our example (we will use the same database throughout the tutorial
-    return client['user_shopping_list']
+# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
+from pymongo import MongoClient
+client = MongoClient(CONNECTION_STRING)
+
+# Create the database for our example (we will use the same database throughout the tutorial
+db =  client['user_shopping_list']
+col = db["user_1_items"]
+data = list(col.find())
                       
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -29,10 +31,6 @@ def start_message(message):
 
 @bot.message_handler(content_types=['text'])
 def show_data(message):
-                      
-    db = get_database()
-    col = db["user_1_items"]
-    data = list(col.find())
 
     for item in data:
         try:
