@@ -4,20 +4,19 @@ import time
 from telebot import types
 from config import token
 from pymongo import MongoClient
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(tok
 
-def get_database():
+# Provide the mongodb atlas url to connect python to mongodb using pymongo
+CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-    # Provide the mongodb atlas url to connect python to mongodb using pymongo
-    CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 
-    # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
+client = MongoClient(CONNECTION_STRING)
 
-    client = MongoClient(CONNECTION_STRING)
-
-    # Create the database for our example (we will use the same database throughout the tutorial
-    return client['user_shopping_list']
-
+# Create the database for our example (we will use the same database throughout the tutorial
+db = client['user_shopping_list']
+col = db["user_1_items"]
+                      
 @bot.message_handler(commands=['start'])
 def start_message(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -27,9 +26,7 @@ def start_message(message):
 
 @bot.message_handler(content_types=['text'])
 def show_data(message):
-
-    db = get_database()
-    col = db["user_1_items"]
+                      
     data = list(col.find())
 
     for item in data:
