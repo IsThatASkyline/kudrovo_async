@@ -32,7 +32,7 @@ def show_data(message):
     col = db["user_1_items"]
     data = list(col.find())
 
-    for index, item in enumerate(data):
+    for item in data:
         if "Нет названия" in item['Название']:
             continue
         else:
