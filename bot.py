@@ -5,22 +5,6 @@ from telebot import types
 from config import token
 
 bot = telebot.TeleBot(token)
-
-
-from pymongo import MongoClient
-import pymongo
-
-# Provide the mongodb atlas url to connect python to mongodb using pymongo
-CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
-# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-from pymongo import MongoClient
-client = MongoClient(CONNECTION_STRING)
-
-# Create the database for our example (we will use the same database throughout the tutorial
-db =  client['user_shopping_list']
-col = db["user_1_items"]
-data = list(col.find())
                       
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -31,16 +15,30 @@ def start_message(message):
 
 @bot.message_handler(content_types=['text'])
 def show_data(message):
+    from pymongo import MongoClient
+    # Provide the mongodb atlas url to connect python to mongodb using pymongo
+    CONNECTION_STRING = "mongodb+srv://artklk12:artklk12@cluster0.ch7cl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-    for item in data:
-        try:
-            card = f"{item['Название']} \n" \
-                   f"{item['Картинка']} \n" \
-                   f"{item['Цена']}\n\n" \
-                   f"{item['Адрес']} \n\n" \
-                   f"{item['Описание']}\n" \
-                   f"{item['Ссылка']}\n"
-            bot.send_message(message.chat.id, card)
-        except:
-            time.sleep(1)
+    # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
+    client = MongoClient(CONNECTION_STRING)
+
+    # Create the database for our example (we will use the same database throughout the tutorial
+
+    db = client["user_shopping_list"]
+    list = db.user_1_items.find()
+
+    for index, item in enumerate(list):
+        if "Нет названия" in item['Название']:
+            continue
+        else:
+            try:
+                card = f"{item['Название']} \n" \
+                       f"{item['Картинка']} \n" \
+                       f"{item['Цена']}\n\n" \
+                       f"{item['Адрес']} \n\n" \
+                       f"{item['Описание']}\n" \
+                       f"{item['Ссылка']}\n"
+                bot.send_message(message.chat.id, card)
+            except:
+                time.sleep(1)
 bot.polling()
