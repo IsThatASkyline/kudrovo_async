@@ -39,12 +39,31 @@ async def get_data(session, link_product):
     async with session.get(url=url, headers=headers) as response:
         src = await response.text()
         soup = BeautifulSoup(src, "lxml")
+        
+        try:
+            title = soup.find('h1', class_='a10a3f92e9--title--UEAG3').text
+        except:
+            title = "Нет названия"
 
-        title = soup.find('h1', class_='a10a3f92e9--title--UEAG3').text
-        prise = soup.find('span', class_='a10a3f92e9--price_value--lqIK0').text
-        address = soup.find('address', class_='a10a3f92e9--address--F06X3').text.rstrip('На карте')
-        opisanie = soup.find('p', class_='a10a3f92e9--description-text--YNzWU').text
-        image = soup.find('div', class_='a10a3f92e9--photo_gallery_container--OS_kt').find("div").find("span").find("span").get("content")
+        try:
+            prise = soup.find('span', class_='a10a3f92e9--price_value--lqIK0').text
+        except:
+            prise = "Нет цены"
+
+        try:
+            address = soup.find('address', class_='a10a3f92e9--address--F06X3').text.rstrip('На карте')
+        except:
+            address = "Нет адреса"
+
+        try:
+            opisanie = soup.find('p', class_='a10a3f92e9--description-text--YNzWU').text
+        except:
+            opisanie = "Нет описания"
+
+        try:
+            image = soup.find('div', class_='a10a3f92e9--photo_gallery_container--OS_kt').find("div").find("span").find("span").get("content")
+        except Exception:
+            image = "Нет картинки"
 
         cards_data.append(
             {
@@ -52,6 +71,7 @@ async def get_data(session, link_product):
                 "Цена": prise.replace(" ", " "),
                 "Адрес": address,
                 "Описание": opisanie.replace("\n", ""),
+                "Ссылка": link,
                 "Картинка": image
             }
         )
