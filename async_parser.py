@@ -7,13 +7,6 @@ start_time = time.time()
 
 cards_data = []
 
-URL = "https://spb.cian.ru/cat.php?deal_type=rent&engine_version=2&location%5B0%5D=244909&offer_type=flat&room1=1&room2=1&type=4"
-headers = {
-    "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*",
-    "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36",
-
-}
-
 def get_database():
 
     # Provide the mongodb atlas url to connect python to mongodb using pymongo
@@ -31,9 +24,8 @@ async def get_data(session, link_product):
 
     url = link_product
     headers = {
-        "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*",
-        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36",
-
+        "accept": "*/*",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
     }
 
     async with session.get(url=url, headers=headers) as response:
@@ -82,9 +74,8 @@ async def get_links(session, page):
     url=f"https://spb.cian.ru/cat.php?deal_type=rent&engine_version=2&location%5B0%5D=244909&offer_type=flat&p={page}&room1=1&room2=1&type=4",
 
     headers = {
-        "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*",
-        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36",
-
+        "accept": "*/*",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
     }
 
     async with session.get(url=url, headers=headers) as response:
@@ -106,10 +97,10 @@ async def gather_data():
     url = "https://spb.cian.ru/cat.php?deal_type=rent&engine_version=2&location%5B0%5D=244909&offer_type=flat&room1=1&room2=1&type=4"
 
     headers = {
-        "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*",
-        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36",
-
+        "accept": "*/*",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
     }
+    
     async with aiohttp.ClientSession() as session:
         r = await session.get(url=url, headers=headers)
         soup = BeautifulSoup(await r.text(), "lxml")
