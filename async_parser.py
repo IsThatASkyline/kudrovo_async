@@ -62,7 +62,7 @@ async def get_data(session, link_product):
                 "Название": title,
                 "Цена": prise.replace(" ", " "),
                 "Адрес": address,
-                "Описание": opisanie.replace("\n", ""),
+                "Описание": opisanie,
                 "Ссылка": link_product,
                 "Картинка": image
             }
